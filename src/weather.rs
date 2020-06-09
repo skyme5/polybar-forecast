@@ -23,6 +23,8 @@ struct QueryParams<'a> {
     city_id: &'a str,
     #[serde(rename = "units")]
     units: &'a str,
+    #[serde(rename = "lang")]
+    lang: &'a str,
     cnt: i32,
 }
 
@@ -31,6 +33,7 @@ pub fn get_info(config: &Configuration, query: QueryType) -> Result<WeatherInfo,
         app_id: &config.api_key,
         city_id: &config.city_id,
         units: &config.units,
+        lang: &config.lang,
         cnt: 1,
     };
 
