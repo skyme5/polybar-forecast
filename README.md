@@ -1,50 +1,54 @@
-## Weather forecast for Polybar
+# Weather forecast for Polybar
 ![preview](https://github.com/kamek-pf/polybar-forecast/blob/master/screenshots/preview.png)
 
-This is a simple weather forecast module for Polybar. \
-The first number is the current temperature and the second one is a 3 hour forecast.
+This is a simple weather forecast module for Polybar. You will need Weather Icons and/or Material Icons for this to work properly. Both are available in the AUR:
 
-You need Weather Icons and Material Icons for this to work properly. \
-Both are available in the AUR:
 - [Weather Icons](https://aur.archlinux.org/packages/ttf-weather-icons/)
 - [Material Icons](https://aur.archlinux.org/packages/ttf-material-icons/)
 
-### Configuration
-Look at the example TOML configuration file.
+## Usage
 
-```toml
-# Register at https://openweathermap.org to get your API key
-api_key = "YOUR_API_KEY"
+Following command-line options are available
 
-# This is for Montreal, find your city at https://openweathermap.org
-# The id will be the last part of the URL
-city_id = "6077243"
-
-# Display settings
-units = "metric"
-display_symbol = "°C"
+```text
+ -k, --api-key             Your unique openweathermap.org API key.
+ -c, --city-id             City ID.
+ -u, --units               Units of measurement. standard, metric and imperial
+                           units are available. If you do not use the units
+                           parameter, standard units will be applied by default.
+ -l, --language            You can use this parameter to get the output in your
+                           language. (Default: en.)
+ -f, --enable-forcast      Include forcast in result.
 ```
 
-### Build
-Run `cargo build --release`, the you'll find the binary `target/release/polybar-forecast`.
-You can copy the binary anywhere you want, but `config.toml` has to be in the same directory.
+To find city id read [this](https://www.dmopress.com/openweathermap-howto/#:~:text=Get%20your%20OpenWeatherMap%20City%20ID).
 
-### Polybar integration
+## Build
+
+```
+cargo build --release
+```
+
+then you'll find the binary `target/release/polybar-forecast`.
+
+## Polybar integration
 You can define your new module like this :
 
 ```
 [module/weather]
 type = custom/script
-exec = ~/.config/polybar/modules/forecast/polybar-forecast
+exec = ~/polybar-forecast --api-key=API_KEY --city-id=CITY_ID --units=metric
 exec-if = ping openweathermap.org -c 1
-interval = 600
-label-font = 3
-```
-Don't forget to add Weather Icons to your config or it won't render correctly :
-```
-...
-font-2 = Weather Icons:size=12;0
-...
+
+;label = %output:0:15:...%
+label = %output%
+interval = 10
+label-font = 2
 ```
 
-Then you may add your new `weather` module on your bar.
+Don't forget to add Weather Icons to your config or it won't render correctly :
+```
+font-1 = Weather Icons:size=12;0
+```
+
+You can change line height in `font-1` to adjust vertical align of text.
